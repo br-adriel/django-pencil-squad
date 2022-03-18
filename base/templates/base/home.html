@@ -1,22 +1,45 @@
 {% extends 'main.html' %}
 
 {% block content %}
-<h1>Home template</h1>
 
-<a href="{% url 'create-room' %}">Criar sala</a>
+<style>
+  .home-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+  }
+</style>
 
-<div>
-  {% for room in rooms %}
-  <div style="border: solid 1px black; margin: 8px 0;">
-    <a href="{% url 'update-room' room.id %}">Editar</a>
-    <a href="{% url 'delete-room' room.id %}">Apagar</a>
-    <br>
-    <span>@{{ room.host.username }}</span>
-    <br>
-    <a href="{% url 'room' pk=room.id %}">{{ room.id }}</a> - {{ room.name }}
-    <br>
-    <small>{{room.topic.name}}</small>
+<div class="home-container">
+  <div>
+    <h3>Navegue por tópicos</h3>
+    <hr>
+    <div>
+      <a href="{% url 'home' %}">Todos os tópicos</a>
+    </div>
+    {% for topic in topics %}
+      <div>
+        <a href="{% url 'home' %}?q={{topic.name}}">{{ topic.name }}</a>
+      </div>
+    {% endfor %}
   </div>
-  {% endfor %}
+
+  <div>
+    <h5>{{ rooms.count }} salas disponíveis</h5>
+    <a href="{% url 'create-room' %}">Criar sala</a>
+    <div>
+      {% for room in rooms %}
+      <div style="border: solid 1px black; margin: 8px 0;">
+        <a href="{% url 'update-room' room.id %}">Editar</a>
+        <a href="{% url 'delete-room' room.id %}">Apagar</a>
+        <br>
+        <span>@{{ room.host.username }}</span>
+        <br>
+        <a href="{% url 'room' pk=room.id %}">{{ room.id }}</a> - {{ room.name }}
+        <br>
+        <small>{{room.topic.name}}</small>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endblock %}
 </div>
-{% endblock %}
