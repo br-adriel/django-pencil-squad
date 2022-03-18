@@ -1,8 +1,31 @@
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import redirect, render
 
 from .forms import RoomForm
 from .models import Room, Topic
+
+
+def login_page(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            User.objects.get(username=username)
+        except:
+            messages.error(request, 'O usuário não existe')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        messages.error(request, 'Nome de usuário ou senha inválidos')
+
+    context = {}
+    return render(request, "base/login_register.html", context)
 
 
 def home(request):
