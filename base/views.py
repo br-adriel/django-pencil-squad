@@ -11,6 +11,9 @@ from .models import Room, Topic
 
 
 def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
