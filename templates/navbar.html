@@ -7,6 +7,10 @@
   <button type="submit">Pesquisar</button>
 </form>
 
+{% if request.user.is_authenticated %}
+  <a href="{% url 'logout' %}">Sair</a>
+{% else %}
 <a href="{% url 'login' %}">Entrar</a>
+{% endif %}
 
 <hr />
