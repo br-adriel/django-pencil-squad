@@ -1,6 +1,7 @@
 {% extends 'main.html' %}
 
 {% block content %}
+{% if page == 'login' %}
 <div>
   <form action="" method="post">
     {% csrf_token %}
@@ -13,4 +14,13 @@
     <button type="submit">Entrar</button>
   </form>
 </div>
+{% else %}
+<div>
+  <form action="" method="post">
+    {% csrf_token %}
+    
+    <button type="submit">Criar conta</button>
+  </form>
+</div>
+{% endif %}
 {% endblock %}
