@@ -14,6 +14,7 @@ def login_page(request):
     if request.user.is_authenticated:
         return redirect('home')
 
+    page = 'login'
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -29,7 +30,7 @@ def login_page(request):
             return redirect('home')
         messages.error(request, 'Nome de usuário ou senha inválidos')
 
-    context = {}
+    context = {'page': page}
     return render(request, "base/login_register.html", context)
 
 
@@ -37,6 +38,15 @@ def login_page(request):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
+
+def register_user(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    page = 'register'
+    context = {'page': page}
+    return render(request, 'base/login_register.html', context)
 
 
 @login_required(login_url='login')
