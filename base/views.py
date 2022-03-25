@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
 
 from .forms import RoomForm
-from .models import Room, Topic
+from .models import Room, Topic, Message
 
 
 def login_page(request):
@@ -78,12 +78,23 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-@login_required(login_url='login')
 def room(request, pk):
     room = Room.objects.get(id=pk)
+
+    if request.method == 'POST':
+        Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('comment')
+        )
+        return redirect('room', pk=room.id)
+
+    messages = room.message_set.all().order_by('-created')
     context = {
-        'room': room
+        'room': room,
+        'room_messages': messages
     }
+
     return render(request, 'base/room.html', context)
 
 
