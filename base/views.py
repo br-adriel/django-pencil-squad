@@ -102,6 +102,21 @@ def room(request, pk):
 
 
 @login_required(login_url='login')
+def delete_message(request, pk):
+    message = Message.objects.get(id=pk)
+
+    if request.user != message.user:
+        return HttpResponse('Permissão de exclusão negada!')
+
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+
+    context = {'obj': message}
+    return render(request, 'base/delete.html', context)
+
+
+@login_required(login_url='login')
 def create_room(request):
     form = RoomForm()
 
