@@ -37,5 +37,13 @@
     </div>
     {% endif %}
   </div>
+
+  <div class="participants">
+    <h3>Participantes</h3>
+    <hr>
+    {% for user in participants %}
+      <p>@{{ user.username }}</p>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}
