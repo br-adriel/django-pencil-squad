@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
 
-from .forms import RoomForm
+from .forms import RoomForm, UserForm
 from .models import Room, Topic, Message
 
 
@@ -192,3 +192,17 @@ def delete_room(request, pk):
 
     context = {'obj': room}
     return render(request, 'base/delete.html', context)
+
+
+@login_required(login_url='login')
+def update_user(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user-profile', user.id)
+    context = {'form': form}
+    return render(request, 'base/update_user.html', context)

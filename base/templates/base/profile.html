@@ -22,12 +22,12 @@
             <p>@{{ user.username }}</p>
             
             {% if user == request.user %}
-              <a href="edit-user.html" class="btn btn--main btn--pill">Editar perfil</a>
+              <a href="{% url 'update-user' %}" class="btn btn--main btn--pill">Editar perfil</a>
             {% endif %}
           </div>
           <div class="profile__about">
             <h3>Sobre</h3>
-            <p>{% lorem 1 b random %}</p>
+            <p>{{ user.bio }}</p>
           </div>
         </div>
 
