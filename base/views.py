@@ -73,7 +73,7 @@ def home(request):
         Q(name__icontains=q) |
         Q(description__icontains=q)
     )
-    topics = Topic.objects.all()
+    topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
 
     context = {'rooms': rooms, 'topics': topics,
@@ -126,11 +126,11 @@ def user_profile(request, pk):
     topics = Topic.objects.all()
 
     context = {
-                "user": user,
-                "rooms": rooms,
-                "room_messages": room_messages,
-                "topics": topics
-            }
+        "user": user,
+        "rooms": rooms,
+        "room_messages": room_messages,
+        "topics": topics
+    }
     return render(request, 'base/profile.html', context)
 
 
@@ -168,7 +168,7 @@ def update_room(request, pk):
         form = RoomForm(request.POST, instance=room)
         topic_name = request.POST.get('topic')
         topic, create = Topic.objects.get_or_create(name=topic_name)
-        
+
         room.name = request.POST.get('name')
         room.topic = topic
         room.description = request.POST.get('description')
@@ -206,3 +206,13 @@ def update_user(request):
             return redirect('user-profile', user.id)
     context = {'form': form}
     return render(request, 'base/update_user.html', context)
+
+
+def topics_page(request):
+    q = ''
+    if request.GET.get('q') != None:
+        q = request.GET.get('q')
+
+    topics = Topic.objects.filter(name__icontains=q)
+    context = {'topics': topics}
+    return render(request, 'base/topics.html', context)
