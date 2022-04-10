@@ -1,14 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import UserCreationForm
 
 from .forms import RoomForm, UserForm
-from .models import Room, Topic, Message
+from .models import Room, Topic, Message, User
 
 
 def login_page(request):
@@ -220,5 +219,5 @@ def topics_page(request):
 
 def activity_page(request):
     room_messages = Message.objects.all()[0:15]
-    context = { 'room_messages': room_messages }
+    context = {'room_messages': room_messages}
     return render(request, 'base/activity.html', context)
