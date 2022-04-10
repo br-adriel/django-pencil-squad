@@ -12,4 +12,5 @@ class RoomForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
+        fields = ['first_name', 'last_name',
+                  'username', 'email', 'bio', 'avatar']
