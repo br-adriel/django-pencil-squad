@@ -16,19 +16,19 @@ def login_page(request):
 
     page = 'login'
     if request.method == 'POST':
-        username = request.POST.get('username').lower()
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
 
         try:
-            User.objects.get(username=username)
+            User.objects.get(email=email)
         except:
             messages.error(request, 'O usuário não existe')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
-        messages.error(request, 'Nome de usuário ou senha inválidos')
+        messages.error(request, 'Email ou senha inválidos')
 
     context = {'page': page}
     return render(request, "base/login_register.html", context)
