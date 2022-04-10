@@ -4,9 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.contrib.auth.forms import UserCreationForm
 
-from .forms import RoomForm, UserForm
+from .forms import RoomForm, UserForm, MyUserCreationForm
 from .models import Room, Topic, Message, User
 
 
@@ -44,9 +43,9 @@ def register_user(request):
     if request.user.is_authenticated:
         return redirect('home')
 
-    form = UserCreationForm()
+    form = MyUserCreationForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
